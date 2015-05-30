@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TTTApiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApiKey" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Score">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ScoreValue" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Token" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExpireDate" Type="datetime" Nullable="false" />
+          <Property Name="ApplicationID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApplicationID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Score_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="Score" Type="Self.Score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Score">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Score_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Score" Type="Self.Score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Score">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_User">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TTTApiModelStoreContainer">
+          <EntitySet Name="Application" EntityType="Self.Application" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Score" EntityType="Self.Score" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Score_Application" Association="Self.FK_Score_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Score" EntitySet="Score" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Score_User" Association="Self.FK_Score_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Score" EntitySet="Score" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Application" Association="Self.FK_Session_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_User" Association="Self.FK_Session_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_User" Association="Self.FK_User_User">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TTTApiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ApiKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Session" Relationship="Self.FK_Session_Application" FromRole="Application" ToRole="Session" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_User" FromRole="Application" ToRole="User" />
+          <NavigationProperty Name="Score" Relationship="TTTApiModel.FK_Score_Application" FromRole="Application" ToRole="Score" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApplicationID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="Self.FK_Session_Application" FromRole="Session" ToRole="Application" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Session_User" FromRole="Session" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ApplicationID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="Self.FK_User_User" FromRole="User" ToRole="Application" />
+          <NavigationProperty Name="Session" Relationship="Self.FK_Session_User" FromRole="User" ToRole="Session" />
+          <NavigationProperty Name="Score" Relationship="TTTApiModel.FK_Score_User" FromRole="User" ToRole="Score" />
+        </EntityType>
+        <Association Name="FK_Session_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_User">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TTTApiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Application" EntityType="Self.Application" />
+          <EntitySet Name="Session" EntityType="Self.Session" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_Session_Application" Association="Self.FK_Session_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_User" Association="Self.FK_User_User">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_User" Association="Self.FK_Session_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
+          <EntitySet Name="Score" EntityType="TTTApiModel.Score" />
+          <AssociationSet Name="FK_Score_Application" Association="TTTApiModel.FK_Score_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Score" EntitySet="Score" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Score_User" Association="TTTApiModel.FK_Score_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Score" EntitySet="Score" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Score">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Application" Relationship="TTTApiModel.FK_Score_Application" FromRole="Score" ToRole="Application" />
+          <NavigationProperty Name="User" Relationship="TTTApiModel.FK_Score_User" FromRole="Score" ToRole="User" />
+          <Property Name="ScoreValue" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+        </EntityType>
+        <Association Name="FK_Score_Application">
+          <End Type="TTTApiModel.Application" Role="Application" Multiplicity="1" />
+          <End Type="TTTApiModel.Score" Role="Score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Score">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Score_User">
+          <End Type="TTTApiModel.User" Role="User" Multiplicity="1" />
+          <End Type="TTTApiModel.Score" Role="Score" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Score">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TTTApiModelStoreContainer" CdmEntityContainer="TTTApiEntities">
+          <EntitySetMapping Name="Application">
+            <EntityTypeMapping TypeName="TTTApiModel.Application">
+              <MappingFragment StoreEntitySet="Application">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ApiKey" ColumnName="ApiKey" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Session">
+            <EntityTypeMapping TypeName="TTTApiModel.Session">
+              <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="TTTApiModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Score">
+            <EntityTypeMapping TypeName="TTTApiModel.Score">
+              <MappingFragment StoreEntitySet="Score">
+                <ScalarProperty Name="ScoreValue" ColumnName="ScoreValue" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
